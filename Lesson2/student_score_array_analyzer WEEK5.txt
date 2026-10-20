@@ -1,0 +1,138 @@
+'use strict';
+
+console.log('STUDENT SCORE ARRAY ANALYZER');
+
+const studentNames = ['Ana', 'Ben', 'Carla', 'Daniel', 'Ella'];
+const studentScores = [85, 72, 91, 64, 78];
+
+const activityScores = [
+    [80, 85, 90],
+    [70, 72, 74],
+    [88, 92, 95],
+    [60, 65, 67],
+    [75, 78, 81]
+];
+
+const originalNames = Array.from(studentNames);
+
+// PART A: ORIGINAL RECORDS
+console.log('\nPART A: ORIGINAL RECORDS');
+
+for (let i = 0; i < studentNames.length; i++) {
+    console.log(${i} - ${studentNames[i]}: ${studentScores[i]});
+}
+
+// PART B: ADD NEW STUDENTS
+console.log('\nPART B: ADD NEW STUDENTS');
+
+studentNames.push('Faith');
+studentScores.push(88);
+
+studentNames.unshift('Aaron');
+studentScores.unshift(76);
+
+console.log('Updated Names:', studentNames);
+console.log('Updated Scores:', studentScores);
+console.log('Number of Students:', studentNames.length);
+
+// PART C: REMOVE AND REPLACE STUDENTS
+console.log('\nPART C: REMOVE AND REPLACE STUDENTS');
+
+studentNames.shift();
+studentScores.shift();
+
+studentNames.shift();
+studentScores.shift();
+
+studentNames.pop();
+studentScores.pop();
+
+studentNames.pop();
+studentScores.pop();
+
+let daniel = studentNames.indexOf('Daniel');
+
+studentNames.splice(daniel, 1);
+studentScores.splice(daniel, 1);
+
+studentNames.splice(2, 0, 'Grace');
+studentScores.splice(2, 0, 82);
+
+console.log('Names:', studentNames);
+console.log('Scores:', studentScores);
+
+// PART D: CLASS STATISTICS
+console.log('\nPART D: CLASS STATISTICS');
+
+let total = studentScores.reduce((sum, score) => sum + score, 0);
+let average = total / studentScores.length;
+let highest = Math.max(...studentScores);
+let lowest = Math.min(...studentScores);
+
+console.log('Total Score:', total);
+console.log('Average Score:', average.toFixed(2));
+console.log('Highest Score:', highest);
+console.log('Lowest Score:', lowest);
+
+// PART E: ARRAY METHODS
+console.log('\nPART E: ARRAY METHODS');
+
+let passingScores = studentScores.filter(score => score >= 75);
+
+let statuses = studentScores.map(score =>
+    score >= 75 ? 'Passed' : 'Failed'
+);
+
+let atLeastOneFailed = studentScores.some(score => score < 75);
+let allPassed = studentScores.every(score => score >= 75);
+
+console.log('Passing Scores:', passingScores);
+console.log('Statuses:', statuses);
+console.log('At Least One Failed:', atLeastOneFailed);
+console.log('All Passed:', allPassed);
+
+// PART F: SORTING AND SEARCHING
+console.log('\nPART F: SORTING AND SEARCHING');
+
+let sortedScores = Array.from(studentScores);
+
+sortedScores.sort((a, b) => b - a);
+
+console.log('Scores from Highest:', sortedScores);
+console.log('Contains 91:', studentScores.includes(91));
+console.log('Index of 91:', studentScores.indexOf(91));
+
+// PART G: TWO-DIMENSIONAL ARRAYS
+console.log('\nPART G: TWO-DIMENSIONAL ARRAYS');
+
+const updatedActivityScores = [
+    [70, 72, 74],
+    [88, 92, 95],
+    [82, 84, 86]
+];
+
+const activityAverages = [];
+
+for (let i = 0; i < updatedActivityScores.length; i++) {
+    let sum = 0;
+
+    for (let j = 0; j < updatedActivityScores[i].length; j++) {
+        console.log('Activity Score:', updatedActivityScores[i][j]);
+        sum += updatedActivityScores[i][j];
+    }
+
+    let avg = sum / updatedActivityScores[i].length;
+
+    activityAverages.push(avg);
+
+    console.log('Average Activity Score:', avg.toFixed(2));
+}
+
+console.log('Activity Averages:', activityAverages);
+
+// PART H: TEXT AND STUDENT INFORMATION
+console.log('\nPART H: TEXT AND STUDENT INFORMATION');
+
+console.log('Student:', studentNames[0]);
+console.log('Original Names:', originalNames);
+console.log('Student Name in Uppercase:', studentNames[0].toUpperCase());
