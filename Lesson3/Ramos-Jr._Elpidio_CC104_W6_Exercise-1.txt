@@ -1,0 +1,515 @@
+'use strict';
+
+console.log('==============================================');
+console.log('   CAMPUS IT SUPPORT REQUEST MANAGER');
+console.log('==============================================');
+
+
+// ================================================================
+// PART A: STACK - UNDO HISTORY
+// ================================================================
+
+class Stack {
+  constructor() {
+    // Initialize an empty array for stack storage.
+    this.data = [];
+  }
+
+  push(element) {
+    // Add an element to the top of the stack.
+    this.data.push(element);
+  }
+
+  pop() {
+    // Remove and return the top element.
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return this.data.pop();
+  }
+
+  peek() {
+    // Return the top element without removing it.
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return this.data[this.data.length - 1];
+  }
+
+  isEmpty() {
+    // Check whether the stack contains no elements.
+    return this.data.length === 0;
+  }
+
+  size() {
+    // Return the number of elements in the stack.
+    return this.data.length;
+  }
+
+  toString() {
+    // Convert the stack contents into readable text.
+    return this.data.join(', ');
+  }
+}
+
+
+// Display Part A.
+console.log('\n----------------------------------------------');
+console.log('PART A: UNDO HISTORY');
+console.log('----------------------------------------------');
+
+const history = new Stack();
+
+// Add the required actions.
+history.push('Opened Ticket #101');
+history.push('Assigned Ticket #101');
+history.push('Closed Ticket #101');
+
+// Display the top action.
+console.log('Top Action:', history.peek());
+
+// Undo the most recent action.
+const undoneAction = history.pop();
+console.log('Undo Action:', undoneAction);
+
+// Display the remaining actions.
+console.log('Remaining Actions:', history.toString());
+
+// Display the current stack size.
+console.log('Stack Size:', history.size());
+
+
+// ================================================================
+// PART B: QUEUE - WAITING REQUESTS
+// ================================================================
+
+class Queue {
+  constructor() {
+    // Initialize an empty array for queue storage.
+    this.data = [];
+  }
+
+  enqueue(element) {
+    // Add a new element to the back of the queue.
+    this.data.push(element);
+  }
+
+  dequeue() {
+    // Remove and return the first element.
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return this.data.shift();
+  }
+
+  front() {
+    // Return the first element without removing it.
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return this.data[0];
+  }
+
+  isEmpty() {
+    // Check whether the queue is empty.
+    return this.data.length === 0;
+  }
+
+  size() {
+    // Return the number of elements in the queue.
+    return this.data.length;
+  }
+
+  toString() {
+    // Convert queue contents into readable text.
+    return this.data.join(', ');
+  }
+}
+
+
+// Display Part B.
+console.log('\n----------------------------------------------');
+console.log('PART B: WAITING REQUESTS');
+console.log('----------------------------------------------');
+
+const supportQueue = new Queue();
+
+// Add requests according to their arrival order.
+supportQueue.enqueue('Ticket #201 - Password Reset');
+supportQueue.enqueue('Ticket #202 - No Internet');
+supportQueue.enqueue('Ticket #203 - Printer Problem');
+supportQueue.enqueue('Ticket #204 - Software Installation');
+
+// Display the next request.
+console.log('Next Request:', supportQueue.front());
+
+// Process the first two requests.
+const firstProcessed = supportQueue.dequeue();
+const secondProcessed = supportQueue.dequeue();
+
+console.log('Processed:', firstProcessed);
+console.log('Processed:', secondProcessed);
+
+// Display remaining requests.
+console.log('Remaining Requests:', supportQueue.toString());
+
+// Display queue size.
+console.log('Queue Size:', supportQueue.size());
+
+
+// ================================================================
+// PART C: PRIORITY QUEUE - URGENT REQUESTS
+// ================================================================
+
+class PriorityQueue {
+  constructor() {
+    // Initialize an empty array for priority queue storage.
+    this.data = [];
+  }
+
+  enqueue(request, priority) {
+    // Create an object containing the request and priority.
+    const newItem = {
+      request: request,
+      priority: priority
+    };
+
+    // Find the correct position for the new item.
+    let position = this.data.length;
+
+    for (let i = 0; i < this.data.length; i++) {
+      if (priority < this.data[i].priority) {
+        position = i;
+        break;
+      }
+    }
+
+    // Insert the item at the correct position.
+    // Equal priorities remain in arrival order.
+    this.data.splice(position, 0, newItem);
+  }
+
+  dequeue() {
+    // Remove and return the first priority item.
+    if (this.data.length === 0) {
+      return undefined;
+    }
+
+    return this.data.shift();
+  }
+
+  size() {
+    // Return the number of priority items.
+    return this.data.length;
+  }
+
+  print() {
+    // Display all items in priority order.
+    for (let i = 0; i < this.data.length; i++) {
+      console.log(
+        this.data[i].request +
+        ', Priority ' +
+        this.data[i].priority
+      );
+    }
+  }
+}
+
+
+// Display Part C.
+console.log('\n----------------------------------------------');
+console.log('PART C: URGENT REQUESTS');
+console.log('----------------------------------------------');
+
+const priorityRequests = new PriorityQueue();
+
+// Add the required requests.
+priorityRequests.enqueue(
+  'Ticket #301 - Install Browser',
+  3
+);
+
+priorityRequests.enqueue(
+  'Ticket #302 - Server Offline',
+  1
+);
+
+priorityRequests.enqueue(
+  'Ticket #303 - Faculty PC Failure',
+  2
+);
+
+priorityRequests.enqueue(
+  'Ticket #304 - Internet Laboratory Down',
+  1
+);
+
+// Display the initial priority order.
+console.log('Initial Priority Order:');
+priorityRequests.print();
+
+// Process the first request.
+const urgentRequest = priorityRequests.dequeue();
+
+console.log(
+  'Processed Priority Request:',
+  urgentRequest.request +
+  ', Priority ' +
+  urgentRequest.priority
+);
+
+// Display the remaining requests.
+console.log('Remaining Priority Requests:');
+priorityRequests.print();
+
+
+// ================================================================
+// PART D: LINKED LIST - COMPLETED REQUESTS
+// ================================================================
+
+class Node {
+  constructor(element) {
+    // Store the value of the node.
+    this.element = element;
+
+    // Link to the next node.
+    this.next = null;
+  }
+}
+
+
+class LinkedList {
+  constructor() {
+    // The list starts with no nodes.
+    this.head = null;
+
+    // Track the number of nodes.
+    this.length = 0;
+  }
+
+  append(element) {
+    // Create a new node.
+    const newNode = new Node(element);
+
+    // If the list is empty, make it the first node.
+    if (this.head === null) {
+      this.head = newNode;
+      this.length++;
+      return;
+    }
+
+    // Traverse to the final node.
+    let current = this.head;
+
+    while (current.next !== null) {
+      current = current.next;
+    }
+
+    // Connect the new node to the end.
+    current.next = newNode;
+    this.length++;
+  }
+
+  insert(position, element) {
+    // Check whether the position is valid.
+    if (position < 0 || position > this.length) {
+      return false;
+    }
+
+    const newNode = new Node(element);
+
+    // Insert at the beginning.
+    if (position === 0) {
+      newNode.next = this.head;
+      this.head = newNode;
+      this.length++;
+      return true;
+    }
+
+    // Find the node before the insertion point.
+    let current = this.head;
+
+    for (let i = 1; i < position; i++) {
+      current = current.next;
+    }
+
+    // Connect the new node.
+    newNode.next = current.next;
+    current.next = newNode;
+
+    this.length++;
+    return true;
+  }
+
+  removeAt(position) {
+    // Check whether the position is valid.
+    if (
+      position < 0 ||
+      position >= this.length ||
+      this.head === null
+    ) {
+      return undefined;
+    }
+
+    let removedElement;
+
+    // Remove the first node.
+    if (position === 0) {
+      removedElement = this.head.element;
+      this.head = this.head.next;
+      this.length--;
+
+      return removedElement;
+    }
+
+    // Find the node before the target node.
+    let previous = this.head;
+
+    for (let i = 1; i < position; i++) {
+      previous = previous.next;
+    }
+
+    // Store the element being removed.
+    removedElement = previous.next.element;
+
+    // Skip over the removed node.
+    previous.next = previous.next.next;
+
+    this.length--;
+
+    return removedElement;
+  }
+
+  indexOf(element) {
+    // Start at the first node.
+    let current = this.head;
+    let position = 0;
+
+    // Traverse the linked list.
+    while (current !== null) {
+      if (current.element === element) {
+        return position;
+      }
+
+      current = current.next;
+      position++;
+    }
+
+    // Element was not found.
+    return -1;
+  }
+
+  remove(element) {
+    // Find the element first.
+    const position = this.indexOf(element);
+
+    // Remove it if it exists.
+    if (position !== -1) {
+      return this.removeAt(position);
+    }
+
+    return undefined;
+  }
+
+  isEmpty() {
+    // Check whether the list has no nodes.
+    return this.length === 0;
+  }
+
+  size() {
+    // Return the number of nodes.
+    return this.length;
+  }
+
+  toString() {
+    // Store each element while traversing.
+    let result = [];
+    let current = this.head;
+
+    while (current !== null) {
+      result.push(current.element);
+      current = current.next;
+    }
+
+    return result.join(', ');
+  }
+}
+
+
+// Display Part D.
+console.log('\n----------------------------------------------');
+console.log('PART D: COMPLETED REQUESTS');
+console.log('----------------------------------------------');
+
+const completed = new LinkedList();
+
+// Append the required requests.
+completed.append('Ticket #401 - Account Activated');
+completed.append('Ticket #402 - Printer Connected');
+completed.append('Ticket #403 - Antivirus Updated');
+
+// Insert Ticket #400 at position 0.
+completed.insert(
+  0,
+  'Ticket #400 - Computer Diagnosed'
+);
+
+// Insert Ticket #405 at the end.
+completed.insert(
+  completed.size(),
+  'Ticket #405 - Browser Updated'
+);
+
+// Display the complete list.
+console.log('Complete List:');
+console.log(completed.toString());
+
+// Find Ticket #402.
+const ticket402Index = completed.indexOf(
+  'Ticket #402 - Printer Connected'
+);
+
+console.log(
+  'Index of Ticket #402:',
+  ticket402Index
+);
+
+// Remove the item at position 1.
+const removedPositionOne = completed.removeAt(1);
+
+console.log(
+  'Removed at Position 1:',
+  removedPositionOne
+);
+
+// Remove Ticket #403 by value.
+const removedTicket403 = completed.remove(
+  'Ticket #403 - Antivirus Updated'
+);
+
+console.log(
+  'Removed by Value:',
+  removedTicket403
+);
+
+// Display final list.
+console.log('Final List:');
+console.log(completed.toString());
+
+// Display final size.
+console.log('Final Size:', completed.size());
+
+
+// ================================================================
+// END OF PROGRAM
+// ================================================================
+
+console.log('\n==============================================');
+console.log('           PROGRAM COMPLETED');
+console.log('==============================================');
+
+
